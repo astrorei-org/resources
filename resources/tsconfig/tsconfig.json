@@ -1,9 +1,19 @@
 {
     "compilerOptions": {
+        // Emits an error when having unreachable code due to if/else branch statement or such.
+        "allowUnreachableCode": false,
+        // When dealing with labels (please don't), disallow unused ones. This can help prevents shipping code
+        // with labels in it.
+        "allowUnusedLabels": false,
         // Emit "strict" for better runtime performance and errors management.
         "alwaysStrict": true,
         // Generate .d.ts files.
         "declaration": true,
+        // Optional properties have T | undefined type for typescript. This option enables having them as T only when
+        // actually present at runtime and as undefined only when the property is not there. This change is extreme and
+        // can cause severe pain when dealing with code that doesn't actually think of optionals this way, but it's
+        // useful to know it exists and how it works, since it could be helpful from time to time.
+        "exactOptionalPropertyTypes": false,
         // Experimental decorators, needed for some framework package.
         "experimentalDecorators": true,
         // Ensure local machines file system case insensitivity doesn't mess up imports casing.
@@ -56,11 +66,20 @@
         // allowing the dependencies to have any of these violations.
         "skipLibCheck": true,
         // Enable a lot of more constraining checking behaviour by typescript in order to be more confident about your code
-        // behaviour at runtime. Some of the strict related rules fall under this rule.
+        // behaviour at runtime. Some of the strict related rules fall under this rule (and thus can potentially be omitted
+        // if this one is set to true).
         "strict": true,
+        // When dealing with bind and apply calls for functions, it's possible to use any values in them. This option avoids
+        // that by checking the actual values used, so that only the correct ones can be passed.
+        "strictBindCallApply": true,
+        // It helps assigning and redefining function types properly based on the original function parameters and return type
+        // to avoid errors with subtyping.
+        "strictFunctionTypes": true,
         // Consider null and undefined as standalone types that can be unioned with others. The resulting effect is
         // that a variable typed string can't be null or undefined, except when actually typed to be (by writing 
-        // string | null | undefined).
+        // string | null | undefined). WARNING: it doesn't change other libraries typings. Therefore if a library function
+        // return type is string, and the library doesn't use "strictNullChecks", that value could potentially be null | undefined
+        // as well without typescript warning about it.
         "strictNullChecks": true,
         // When using classes, each property should be initialized either statically or by the instance constructor to
         // avoid having dangling undefined properties roaming around your class instances that could potentially be used
@@ -79,7 +98,5 @@
         // "error" is not correctly typed, since it would be any by default. By enabling this option, we get it typed as unknown
         // which can more easily flow into our other types.
         "useUnknownInCatchVariables": true
-    },
-    "include": [],
-    "exclude": []
+    }
 }
