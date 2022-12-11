@@ -1,0 +1,85 @@
+{
+    "compilerOptions": {
+        // Emit "strict" for better runtime performance and errors management.
+        "alwaysStrict": true,
+        // Generate .d.ts files.
+        "declaration": true,
+        // Experimental decorators, needed for some framework package.
+        "experimentalDecorators": true,
+        // Ensure local machines file system case insensitivity doesn't mess up imports casing.
+        // eg. "./MyFile" being automatically converted to ./myFile.ts on its own, which is undesirable.
+        "forceConsistentCasingInFileNames": true,
+        // Makes available the libraries/types you'd expect your runtime to have. The newer the better (more or less).
+        "lib": ["es2020"],
+        // It should help by printing the whole error messages instead of truncating them. 
+        // It's not that helpful, since long enough message are still truncated, but for those extreme
+        // scenario considering applying this on-demand fix:
+        // (https://github.com/microsoft/TypeScript/issues/35601#issuecomment-921752554).
+        "noErrorTruncation": true,
+        // The switch statement can be seen as a less-powered version of pattern matching.
+        // If used as such, it's important to not have cases with stuff in there and no
+        // return or break statement, causing to fallthrough to the next case at runtime.
+        "noFallthroughCasesInSwitch": true,
+        // Sometimes typescript can't properly infer a type and assign "any" to it (or the type
+        // effectively is the result of some other type constructor returning any due to some errors).
+        // In these cases, it's better to properly give an explicit type to stuff or to fix the resulting
+        // typings somehow, in order to avoid dealing with any in the codebase.
+        "noImplicitAny": true,
+        // If using classes, one could accidentally override members in derived classes. By always marking
+        // them as "override", it's easier to see what's derived and what's not.
+        "noImplicitOverride": true,
+        // If a function can have multiple paths (eg. if/else branches) one can supply a proper return value
+        // in one branch and not the other. This rule prevents doing so, checking each path for a properly typed
+        // return value.
+        "noImplicitReturns": true,
+        // There are cases where the "this" value used in some functions can't be properly typed and would result
+        // in "any". In such cases, it's better to avoid using it and proceed differently.
+        "noImplicitThis": true,
+        // This rule helps signaling intent about how you access record properties. If an object has exact properties,
+        // you're free to access them with the dot notation (eg. object.name), but when using records, which could
+        // potentially have or not have such property, it's more clear you're accessing something that could be not there
+        // by using index signature (eg. record['name']). This together with `noUncheckedIndexedAccess" prevents us from
+        // using missing properties as if they were there at runtime.
+        "noPropertyAccessFromIndexSignature": true,
+        // Adds undefined to the type of values accessed with an index signature, like in arrays or records of which we
+        // don't know exact properties (eg. record['name'] // string | undefined ).
+        "noUncheckedIndexedAccess": true,
+        // Prevents the creation of variables which are only scoped locally and never accessed/read.
+        "noUnusedLocals": true,
+        // Prevents the definition of a parameter in a function signature which is not actually used in the function body.
+        "noUnusedParameters": true,
+        // Useful when dealing with json imports (as when importing the project's package.json) to have them 
+        // correctly imported and typed in typescript
+        "resolveJsonModule": true,
+        // This can be turned on or off depending on how the project settings would conflict with its dependencies. It
+        // effectively checks the dependencies code doesn't violate any of these rules. By skipping the check, we're
+        // allowing the dependencies to have any of these violations.
+        "skipLibCheck": true,
+        // Enable a lot of more constraining checking behaviour by typescript in order to be more confident about your code
+        // behaviour at runtime. Some of the strict related rules fall under this rule.
+        "strict": true,
+        // Consider null and undefined as standalone types that can be unioned with others. The resulting effect is
+        // that a variable typed string can't be null or undefined, except when actually typed to be (by writing 
+        // string | null | undefined).
+        "strictNullChecks": true,
+        // When using classes, each property should be initialized either statically or by the instance constructor to
+        // avoid having dangling undefined properties roaming around your class instances that could potentially be used
+        // erroneously.
+        "strictPropertyInitialization": true,
+        // Specify the version of the project translated javascript to one compatible to the environment available when it
+        // will run on it.
+        "target": "ES2020",
+        // Useful to add ever-existing library code/types to your source code without the need to actually import them.
+        // Used to always have testing libraries exported types in test files, for example.
+        "types": ["node", "jest"],
+        // If you need multiple sources that act like ./node_modules/@types to get types for untyped (or non typescript)
+        // libraries, you can add them here.
+        "typeRoots": ["./node_modules/@types"],
+        // Having to deal with any is cumbersome. Within throw/catch statements, when handling the catch branch, the resulting
+        // "error" is not correctly typed, since it would be any by default. By enabling this option, we get it typed as unknown
+        // which can more easily flow into our other types.
+        "useUnknownInCatchVariables": true
+    },
+    "include": [],
+    "exclude": []
+}
